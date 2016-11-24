@@ -58,7 +58,7 @@
         data.push(['sortBy', query.sortBy || 'recent']);
         data.push(['reviewerType', query.reviewerType || 'all_reviews']);
         data.push(['formatType', query.formatType || '']);
-        data.push(['filterByStar', query.formatType || '']);
+        data.push(['filterByStar', query.filterByStar || '']);
         data.push(['pageNumber', page]);
         data.push(['filterByKeyword', query.filterByKeyword || '']);
         data.push(['shouldAppend', 'undefined']);
