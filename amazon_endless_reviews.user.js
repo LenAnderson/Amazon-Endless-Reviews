@@ -12,11 +12,6 @@
 
 (function() {
     'use strict';
-    var pageBar = document.querySelector('#cm_cr-pagination_bar');
-    var list = document.querySelector('#cm_cr-review_list');
-    var currLink = pageBar.querySelector('li.page-button.a-selected > a');
-    var asin = currLink.href.replace(/^.+\/product-reviews\/([^\/]+)\/.+$/, '$1');
-    var page = currLink.textContent.trim();
     var loading = false;
     var spinner = document.createElement('div');
     spinner.style.backgroundImage = 'url("https://images-na.ssl-images-amazon.com/images/G/01/amazonui/loading/spinner_4x._V1_.gif")';
@@ -24,15 +19,19 @@
     spinner.style.backgroundRepeat = 'no-repeat';
     spinner.style.height = '64px';
     spinner.style.display = 'none';
-    list.insertBefore(spinner, pageBar.parentNode.parentNode);
     addEventListener('scroll', function() {
         if (loading) return;
-        if (pageBar.querySelector('.a-last').classList.contains('a-disabled')) return;
+        var pageBar = document.querySelector('#cm_cr-pagination_bar');
+        if (!pageBar || pageBar.querySelector('.a-last').classList.contains('a-disabled')) return;
         var rect = pageBar.getClientRects()[0];
         if (rect.top > innerHeight) return;
         console.log('load');
         loading = true;
-        spinner.style.display = '';
+        var list = document.querySelector('#cm_cr-review_list');
+        var currLink = pageBar.querySelector('li.page-button.a-selected > a');
+        var asin = currLink.href.replace(/^.+\/product-reviews\/([^\/]+)\/.+$/, '$1');
+        var page = currLink.textContent.trim();
+        list.insertBefore(spinner, pageBar.parentNode.parentNode);
         page++;
         var xhr = new XMLHttpRequest();
         xhr.open('POST', '/ss/customer-reviews/ajax/reviews/get/ref=cm_cr_arp_d_paging_btm_' + page, true);
